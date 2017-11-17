@@ -19,16 +19,18 @@ connection.connect((err) => {
     console.log('Connected!');
 });
 
-app.get('/search', function( req, res ) {
+app.get( '/search', function( req, res ) {
     console.log( req.query );
     let selector = '';
-    if (Object.keys(req.query).length > 0) {
+    if ( Object.keys( req.query ).length > 0 ) {
         selector += "WHERE"
         selector += req.query.q ? ` plate LIKE '%${req.query.q}%' AND` : ''
         selector += req.query.police ? ` plate LIKE 'RB%' AND` : ''
         selector += req.query.diplomat ? ` plate LIKE 'DT%' AND` : ''
-        // selector += req.query.pgt ? ` book_price > \'${req.query.pgt}\' AND` : ''
-    }
+        if ( req.query.brand ) {
+            selector += ` car_brand LIKE '%${req.query.brand}%'`
+        };
+    }; 
     if ( selector.endsWith( 'AND' )) {
         selector = selector.substr( 0, selector.length - 4 );
     }; 
@@ -37,11 +39,29 @@ app.get('/search', function( req, res ) {
     SELECT plate, car_brand, car_model, color, year FROM licence_plates
     ${selector};`;
 
+    connection.query( qu, function( err, result ) {
+        if ( err ) {
+            console.log( err );
+            res.send( { "result": "error", "message": "invalid input" } );
+        return;
+    };
+    res.json( result );
+    });
+});
+
+app.get( '/search/', function( req, res ) {
+    console.log( req.query );
+    let selector = '';
+    selector += `WHERE car_brand = ${req.query.q}`
+    let qu = `SELECT plate, car_brand, car_model, color, year FROM licence_plates
+            ${selector};`;
+
     console.log( qu );
 
     connection.query( qu, function( err, result ) {
         if ( err ) {
-            console.log( err.toString());
+            console.log( err );
+            res.send( { "result": "error", "message": "invalid input" } );
         return;
     };
     res.json( result );

@@ -7,6 +7,7 @@ let table = document.createElement( "table" );
 body.appendChild( table );
 const input = document.querySelector("#input")
 const button = document.querySelector("#button");
+const brand = document.querySelector("#brand")
 const polBtn = document.querySelector("#pol");
 const dipBtn = document.querySelector("#dip");
 
@@ -82,22 +83,32 @@ const checkAlphaNumeric = function( inputtxt ) {
 button.addEventListener( "click", function() {
     table.innerHTML = "";
     let inputValue = input.value;
+    // if (brand.value) {
+    //     inputValue = brand.value    
+    // };
     const validChars = checkAlphaNumeric( inputValue );
     submitOk = inputValue.length <= 7 ? true : false;
+    let inputField = brand.value ? "?brand=" : "?q="
     let radio = "";
     let query = "";
-    if ( polBtn.checked ) {
-        radio = "police=1"
+    if ( polBtn.checked || dipBtn.checked ) {
+        if ( polBtn.checked ) {
+            radio = "police=1";
+        } else if ( dipBtn.checked ) {
+            radio = "diplomat=1"
+        };
         query = `?q=${inputValue}&${radio}`;
-    } else if ( dipBtn.checked ) {
-        radio = "diplomat=1"
-        query = `?q=${inputValue}&${radio}`;
+        if ( brand.value ){
+            query += `&brand=${brand.value}`;
+        }; 
     } else {
         query = `?q=${inputValue}`;
-    }
+        if ( brand.value ){
+            query += `&brand=${brand.value}`;
+        };
+    };
     submitOk ? ajax( "GET", `/search${query}`, render, '' ) : alert( "Sorry, the submitted licence plate is not valid" );
-
-})
+});
 
 const render = function( data ) {
     console.log( data );
