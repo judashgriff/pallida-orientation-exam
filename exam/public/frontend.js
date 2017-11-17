@@ -84,7 +84,7 @@ let submitOk = true;
 
 const checkAlphaNumeric = function( inputtxt ) {  
     let letterNumber = /^[0-9a-zA-Z\-]+$/;  
-    if ( inputtxt.match( letterNumber ) || inputtxt == "" ) {
+    if ( inputtxt.match( letterNumber ) && inputtxt.length <= 7 || inputtxt == "" ) {
         submitOk = true;
         return true;
     } else {   
@@ -96,7 +96,6 @@ const checkAlphaNumeric = function( inputtxt ) {
 button.addEventListener( "click", function() {
     let inputValue = input.value;
     const validChars = checkAlphaNumeric( inputValue );
-    submitOk = inputValue.length <= 7 ? true : false;
     let inputField = brand.value ? "?brand=" : "?q="
     let radio = "";
     let query = "";
