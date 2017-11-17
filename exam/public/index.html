@@ -7,10 +7,16 @@
     <title>Licence</title>
 </head>
 <body>
-    
+
+    <p>Use the searchbar to find a platter or use one of the buttons</p>
     <input placeholder="Search for platter" type="text" name="" id="input">
-    <div><label for="pol">Find only police cars</label><input id="pol" type="radio"></div>
-    <div><label for="pol">Find only diplomat cars</label><input id="dip" type="radio"></div>
+
+    <form action="">
+        <input type="radio" name="gender" checked="checked" value="female"> No query<br>
+        <input type="radio" name="gender" id="pol" value="male"> Police cars only<br>
+        <input type="radio" name="gender" id="dip" value="female"> Diplomat cars only<br>
+    </form>
+
     <button id="button">Query database</button>
 
 

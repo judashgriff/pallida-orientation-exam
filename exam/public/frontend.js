@@ -7,6 +7,8 @@ let table = document.createElement( "table" );
 body.appendChild( table );
 const input = document.querySelector("#input")
 const button = document.querySelector("#button");
+const polBtn = document.querySelector("#pol");
+const dipBtn = document.querySelector("#dip");
 
 
 
@@ -81,8 +83,18 @@ button.addEventListener( "click", function() {
     table.innerHTML = "";
     let inputValue = input.value;
     const validChars = checkAlphaNumeric( inputValue );
-    let query = `?q=${inputValue}`;
     submitOk = inputValue.length <= 7 ? true : false;
+    let radio = "";
+    let query = "";
+    if ( polBtn.checked ) {
+        radio = "police=1"
+        query = `?q=${inputValue}&${radio}`;
+    } else if ( dipBtn.checked ) {
+        radio = "diplomat=1"
+        query = `?q=${inputValue}&${radio}`;
+    } else {
+        query = `?q=${inputValue}`;
+    }
     submitOk ? ajax( "GET", `/search${query}`, render, '' ) : alert( "Sorry, the submitted licence plate is not valid" );
 
 })

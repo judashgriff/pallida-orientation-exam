@@ -24,9 +24,9 @@ app.get('/search', function( req, res ) {
     let selector = '';
     if (Object.keys(req.query).length > 0) {
         selector += "WHERE"
-        selector +=  ` plate LIKE '%${req.query.q}%'`
-        // selector += req.query.publisher ? ` pub_name = \'${req.query.publisher}\' AND` : ''
-        // selector += req.query.plt ? ` book_price < \'${req.query.plt}\' AND` : ''
+        selector += req.query.q ? ` plate LIKE '%${req.query.q}%' AND` : ''
+        selector += req.query.police ? ` plate LIKE 'RB%' AND` : ''
+        selector += req.query.diplomat ? ` plate LIKE 'DT%' AND` : ''
         // selector += req.query.pgt ? ` book_price > \'${req.query.pgt}\' AND` : ''
     }
     if ( selector.endsWith( 'AND' )) {
