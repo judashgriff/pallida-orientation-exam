@@ -57,7 +57,6 @@ function header () {
 function printer( element ) {
     let tableRow = document.createElement( "tr" );
     element.forEach( function( each, i ) {
-        console.log(each)
         let tableCell = document.createElement( "td" );
         tableCell.textContent = each;
         if ( i === 1 ) {
