@@ -67,7 +67,7 @@ function printOrganiser( item ) {
 let submitOk = true;
 
 const checkAlphaNumeric = function( inputtxt ) {  
-    let letterNumber = /^[0-9a-zA-Z]+$/;  
+    let letterNumber = /^[0-9a-zA-Z\-]+$/;  
     if ( inputtxt.match( letterNumber ) || inputtxt == "" ) {
         submitOk = true;
         return true;
@@ -78,12 +78,12 @@ const checkAlphaNumeric = function( inputtxt ) {
 };
 
 button.addEventListener( "click", function() {
+    table.innerHTML = "";
     let inputValue = input.value;
     const validChars = checkAlphaNumeric( inputValue );
-    console.log(validChars);
-    // if (!inputValue.includes( " " )
-    submitOk ? ajax( "GET", "/search", render, input.value ) : alert( "Sorry, the submitted licence plate is not valid" );
-    // ajax( "GET", "/search", render, input.value )
+    let query = `?q=${inputValue}`;
+    submitOk = inputValue.length <= 7 ? true : false;
+    submitOk ? ajax( "GET", `/search${query}`, render, '' ) : alert( "Sorry, the submitted licence plate is not valid" );
 
 })
 
