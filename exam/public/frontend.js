@@ -10,6 +10,7 @@ const button = document.querySelector("#button");
 const brand = document.querySelector("#brand")
 const polBtn = document.querySelector("#pol");
 const dipBtn = document.querySelector("#dip");
+let branded = undefined
 
 
 
@@ -26,7 +27,14 @@ const ajax = function( method, res, callback, data ) {
     };
 };
 
-
+const brandClickListener = function() {
+    branded.forEach( function( element ) {
+        element.addEventListener( 'click', function() {
+            console.log( element.textContent );
+            ajax( "GET", `/search?brand=${element.textContent}`, render, '' );
+        });
+    });
+};
 
 
 let capitalize = ( header ) => {return header[0].toUpperCase() + header.slice( 1 )};
@@ -48,12 +56,18 @@ function header () {
 
 function printer( element ) {
     let tableRow = document.createElement( "tr" );
-    element.forEach( function( each ) {
+    element.forEach( function( each, i ) {
+        console.log(each)
         let tableCell = document.createElement( "td" );
         tableCell.textContent = each;
+        if ( i === 1 ) {
+            tableCell.classList.add("brandItem");
+        };
         tableRow.appendChild( tableCell );
     });
     table.appendChild( tableRow );
+    branded = document.querySelectorAll(".brandItem")
+    brandClickListener()
 };
 
 function printOrganiser( item ) {
@@ -81,11 +95,7 @@ const checkAlphaNumeric = function( inputtxt ) {
 };
 
 button.addEventListener( "click", function() {
-    table.innerHTML = "";
     let inputValue = input.value;
-    // if (brand.value) {
-    //     inputValue = brand.value    
-    // };
     const validChars = checkAlphaNumeric( inputValue );
     submitOk = inputValue.length <= 7 ? true : false;
     let inputField = brand.value ? "?brand=" : "?q="
@@ -102,16 +112,24 @@ button.addEventListener( "click", function() {
             query += `&brand=${brand.value}`;
         }; 
     } else {
-        query = `?q=${inputValue}`;
-        if ( brand.value ){
-            query += `&brand=${brand.value}`;
-        };
+        if ( inputValue ) {
+            query = `?q=${inputValue}`;
+            if ( brand.value ){
+                query += `&brand=${brand.value}`;
+            };
+        } else {
+            query = ``
+            if ( brand.value ){
+                query += `?brand=${brand.value}`;
+            }
+        }
     };
     submitOk ? ajax( "GET", `/search${query}`, render, '' ) : alert( "Sorry, the submitted licence plate is not valid" );
 });
 
 const render = function( data ) {
     console.log( data );
+    table.innerHTML = "";
     printOrganiser( data );
 }
 
