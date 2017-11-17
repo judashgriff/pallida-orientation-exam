@@ -8,10 +8,29 @@
 </head>
 <body>
     
-    <input type="text" name="" id="input">
-    <label for="pol">Find only police cars</label><input id="pol" type="radio">
-    <label for="pol">Find only diplomat cars</label><input id="dip" type="radio">
+    <input placeholder="Search for platter" type="text" name="" id="input">
+    <div><label for="pol">Find only police cars</label><input id="pol" type="radio"></div>
+    <div><label for="pol">Find only diplomat cars</label><input id="dip" type="radio"></div>
     <button id="button">Click me to see results</button>
+
+
+    <style>
+    
+    table {
+        box-sizing: border-box;
+        margin: 1rem;
+        width:95%;
+        border-collapse: collapse;
+    }
+    
+    th, td{
+        border: solid 1px black;
+        padding: 3px;
+    }
+
+    </style>
+
+    <script src="frontend.js"></script>
 
 </body>
 </html>

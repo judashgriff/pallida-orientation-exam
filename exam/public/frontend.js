@@ -2,8 +2,13 @@
 
 const url = "http://localhost:3000";
 
+let body = document.querySelector( "body" );
 let table = document.createElement( "table" );
-main.appendChild( table );
+body.appendChild( table );
+const input = document.querySelector("#input")
+const button = document.querySelector("#button");
+
+
 
 const ajax = function( method, res, callback, data ) {
     const xhr = new XMLHttpRequest();
@@ -30,7 +35,7 @@ function headerMaker( className, header ) {
 };
 
 function header () {
-    let headers = ["name", "author", "category", "publication", "price"]
+    let headers = ["Licence plate", "Brand", "Model", "Color", "Year"]
     let header = document.createElement( "tr" );
     headers.forEach( function( element ) {
         headerMaker( element, header );
@@ -51,17 +56,39 @@ function printer( element ) {
 function printOrganiser( item ) {
     header();
     item.forEach( function( element, i ) {
-        let toPrint = [element.book_name, element.aut_name, 
-            element.cate_descrip, element.pub_name, 
-            element.book_price];
+        let toPrint = [element.plate, element.car_brand, 
+            element.car_model, element.color, 
+            element.year];
         printer( toPrint );
     });
 };
 
 
+let submitOk = true;
+
+const checkAlphaNumeric = function( inputtxt ) {  
+    let letterNumber = /^[0-9a-zA-Z]+$/;  
+    if ( inputtxt.match( letterNumber ) || inputtxt == "" ) {
+        submitOk = true;
+        return true;
+    } else {   
+        submitOk = false;
+        return false;
+    }; 
+};
+
+button.addEventListener( "click", function() {
+    let inputValue = input.value;
+    const validChars = checkAlphaNumeric( inputValue );
+    console.log(validChars);
+    // if (!inputValue.includes( " " )
+    submitOk ? ajax( "GET", "/search", render, input.value ) : alert( "Sorry, the submitted licence plate is not valid" );
+    // ajax( "GET", "/search", render, input.value )
+
+})
+
 const render = function( data ) {
-    console.log(data)
+    console.log( data );
+    printOrganiser( data );
 }
 
-
-ajax( "GET", "/search", render, '' )
