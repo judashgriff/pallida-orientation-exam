@@ -35,16 +35,14 @@ app.get( '/search', function( req, res ) {
         selector = selector.substr( 0, selector.length - 4 );
     }; 
   
-    let qu = `
-    SELECT plate, car_brand, car_model, color, year FROM licence_plates
-    ${selector};`;
+    let query = `SELECT plate, car_brand, car_model, color, year FROM licence_plates ${selector};`;
 
-    connection.query( qu, function( err, result ) {
+    connection.query( query, function( err, result ) {
         if ( err ) {
             console.log( err );
             res.send( { "result": "error", "message": "invalid input" } );
-        return;
-    };
+            return;
+        };
     res.json( result );
     });
 });
@@ -53,17 +51,16 @@ app.get( '/search/', function( req, res ) {
     console.log( req.query );
     let selector = '';
     selector += `WHERE car_brand = ${req.query.q}`
-    let qu = `SELECT plate, car_brand, car_model, color, year FROM licence_plates
-            ${selector};`;
+    let query = `SELECT plate, car_brand, car_model, color, year FROM licence_plates ${selector};`;
 
-    console.log( qu );
+    console.log( query );
 
-    connection.query( qu, function( err, result ) {
+    connection.query( query, function( err, result ) {
         if ( err ) {
             console.log( err );
             res.send( { "result": "error", "message": "invalid input" } );
-        return;
-    };
+            return;
+        };
     res.json( result );
     });
 });

@@ -2,17 +2,14 @@
 
 const url = "http://localhost:3000";
 
-let body = document.querySelector( "body" );
 let table = document.createElement( "table" );
-body.appendChild( table );
+document.body.appendChild( table );
 const input = document.querySelector("#input")
 const button = document.querySelector("#button");
 const brand = document.querySelector("#brand")
 const polBtn = document.querySelector("#pol");
 const dipBtn = document.querySelector("#dip");
-let branded = undefined
-
-
+let branded;
 
 const ajax = function( method, res, callback, data ) {
     const xhr = new XMLHttpRequest();
@@ -35,7 +32,6 @@ const brandClickListener = function() {
         });
     });
 };
-
 
 let capitalize = ( header ) => {return header[0].toUpperCase() + header.slice( 1 )};
 
@@ -79,16 +75,20 @@ function printOrganiser( item ) {
     });
 };
 
-
-let submitOk = true;
+const isSubmitOk = function( bool ) {
+    return bool;
+} 
 
 const checkAlphaNumeric = function( inputtxt ) {  
+    let submitOk;
     let letterNumber = /^[0-9a-zA-Z\-]+$/;  
     if ( inputtxt.match( letterNumber ) && inputtxt.length <= 7 || inputtxt == "" ) {
         submitOk = true;
+        isSubmitOk( true );
         return true;
     } else {   
         submitOk = false;
+        isSubmitOk( false );
         return false;
     }; 
 };
@@ -120,9 +120,13 @@ button.addEventListener( "click", function() {
             if ( brand.value ){
                 query += `?brand=${brand.value}`;
             }
-        }
+        };
     };
-    submitOk ? ajax( "GET", `/search${query}`, render, '' ) : alert( "Sorry, the submitted licence plate is not valid" );
+    if (isSubmitOk) {
+        ajax( "GET", `/search${query}`, render, '' );
+    } else {
+        alert( "Sorry, the submitted licence plate is not valid" );
+    };
 });
 
 const render = function( data ) {
